@@ -1,0 +1,401 @@
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
+.main {
+  flex: 1;
+}
+
+/* ==========================================================================
+   HERO SECTION WITH BACKGROUND IMAGE & OVERLAY (Mobile-First)
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  background-image: 
+    linear-gradient(
+      180deg, 
+      rgba(15, 23, 42, 0.85) 0%, 
+      rgba(15, 23, 42, 0.75) 60%, 
+      rgba(15, 23, 42, 0.95) 100%
+    ),
+    url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1600&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  padding: 40px 0 60px 0;
+}
+
+.heroContainer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+}
+
+.heroContent {
+  max-width: 650px;
+  text-align: left;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.badgeIcon {
+  font-size: 0.8rem;
+}
+
+.heroTitle {
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 18px;
+  color: #ffffff;
+}
+
+.highlight {
+  color: var(--secondary);
+  background: linear-gradient(135deg, #ffffff 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heroSubtitle {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 28px;
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+.ctaGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background-color: var(--primary);
+  color: #ffffff;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border: none;
+  cursor: pointer;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btnPrimary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.95rem;
+  backdrop-filter: blur(8px);
+  text-decoration: none;
+  transition: background-color var(--transition-fast);
+}
+
+.btnSecondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Bottom Bar Info di dalam Hero */
+.heroBottomBar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.contactInfoGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.infoLabel {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.infoValue {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Floating Card Badge (Kanan Bawah) */
+.floatingBadgeCard {
+  background-color: var(--primary);
+  color: #ffffff;
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  max-width: 300px;
+}
+
+.badgeTitle {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.badgeSubtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 10px;
+}
+
+.stars {
+  color: #fbbf24;
+  display: flex;
+  gap: 4px;
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   SECTIONS & GRID STYLES
+   ========================================================================== */
+
+.section {
+  padding: 64px 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.sectionHeader {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 40px auto;
+}
+
+.sectionTag {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.sectionTitle {
+  margin-bottom: 12px;
+}
+
+.sectionDesc {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.card {
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.cardIconWrapper {
+  width: 48px;
+  height: 48px;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+}
+
+.cardTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+.cardText {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.statCard {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.statNumber {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.faqItem {
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.faqItemOpen {
+  border-color: var(--primary);
+}
+
+.faqQuestion {
+  width: 100%;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: left;
+  font-size: 0.95rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.faqAnswer {
+  padding: 0 20px 16px 20px;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  border-top: 1px solid var(--border-color);
+  padding-top: 12px;
+}
+
+/* ==========================================================================
+   BREAKPOINTS (Tablet & Desktop)
+   ========================================================================== */
+
+@media (min-width: 640px) {
+  .heroTitle {
+    font-size: 2.8rem;
+  }
+
+  .ctaGroup {
+    flex-direction: row;
+  }
+
+  .heroBottomBar {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    min-height: 90vh;
+    padding: 60px 0;
+  }
+
+  .heroTitle {
+    font-size: 3.4rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .aboutGrid {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+}
