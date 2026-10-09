@@ -20,7 +20,7 @@ export default function CvGenerator() {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
 
-      <main style={{ flex: 1, padding: '20px 0' }}>
+      <main style={{ flex: 1, padding: '20px 2rem' }}>
         {step === 1 && <CvForm onNextStep={handleNextStep} />}
         {step === 2 && <SkillQuiz onNextStep={handleNextStep} onPrevStep={handlePrevStep} />}
         {step === 3 && <CvPreview onPrevStep={handlePrevStep} />}

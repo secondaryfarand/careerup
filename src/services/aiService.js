@@ -1,78 +1,64 @@
-import { GoogleGenAI, Type } from '@google/genai';
+import { GoogleGenAI } from '@google/genai';
 
 function getAiInstance() {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
   if (!apiKey) {
-    throw new Error('API Key Gemini tidak ditemukan.');
+    throw new Error('API Key Gemini tidak ditemukan di file .env');
   }
 
-  // Tambahkan options apiVersion: 'v1'
-  return new GoogleGenAI({ 
-    apiKey,
-    options: { apiVersion: 'v1' } 
-  });
+  return new GoogleGenAI({ apiKey });
 }
 
 export async function generateQuizFromAI(skills, jobDescription) {
   const ai = getAiInstance();
 
   const prompt = `
-Buatkan kuis pilihan ganda sebanyak ${skills.length || 2} soal untuk menguji pemahaman teknis/praktis pelamar.
-Daftar Keahlian: ${skills.map((s) => s.name).join(', ')}
-Target Pekerjaan: ${jobDescription}
+Buat kuis pilihan ganda ${skills.length || 2} soal.
+Skills: ${skills.map((s) => s.name).join(', ')}
+Job: ${jobDescription}
+
+Format JSON array murni tanpa markdown:
+[{"skill":"","question":"","options":["","","",""],"correct":0}]
 `;
 
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
-    contents: prompt,
-    config: {
-      responseMimeType: 'application/json',
-      responseSchema: {
-        type: Type.ARRAY,
-        items: {
-          type: Type.OBJECT,
-          properties: {
-            skill: { type: Type.STRING },
-            question: { type: Type.STRING },
-            options: {
-              type: Type.ARRAY,
-              items: { type: Type.STRING },
-            },
-            correct: { type: Type.INTEGER },
-          },
-          required: ['skill', 'question', 'options', 'correct'],
-        },
-      },
-    },
+  const interaction = await ai.interactions.create({
+    model: 'gemini-3.8-flash',
+    input: prompt,
   });
 
-  return JSON.parse(response.text);
+  const rawText = interaction.output_text.trim();
+  const cleanJson = rawText.replace(/```json|```/g, '').trim();
+
+  return JSON.parse(cleanJson);
 }
 
-export async function generateCvSummaryFromAI(personalInfo, skills, jobDescription, score) {
+export async function generateCvContentFromAI(skills, jobDescription) {
   const ai = getAiInstance();
 
   const prompt = `
-Kamu adalah profesional pembuat CV ATS berpengalaman.
-Buatkan ringkasan profesional (Professional Summary) 3-4 kalimat dalam bahasa Indonesia yang ringkas, persuasif, dan kaya kata kunci (keywords) sesuai deskripsi pekerjaan berikut:
-"${jobDescription}"
+Job: "${jobDescription}"
+Skills: ${skills.map((s) => s.name).join(', ')}
 
-Data Pengguna:
-- Nama: ${personalInfo.fullName}
-- Skill Utama: ${skills.map((s) => s.name).join(', ')}
-- Hasil Validasi Kuis Skill: ${score}/100
-
-Kembalikan respon HANYA dalam bentuk teks paragraf ringkasan tanpa tanda petik atau teks pembuka.
+Buatkan konten CV ATS ringkas berbasis kata kunci job.
+Format JSON murni tanpa markdown:
+{
+  "summary": "Ringkasan profesional 2-3 kalimat yang relevan dengan job.",
+  "highlights": [
+    "Poin kualifikasi 1 relevan dengan job",
+    "Poin kualifikasi 2 relevan dengan job",
+    "Poin kualifikasi 3 relevan dengan job"
+  ]
+}
 `;
 
-  const response = await ai.models.generateContent({
+  const interaction = await ai.interactions.create({
     model: 'gemini-3.8-flash',
-    contents: prompt,
-    config: {
-      responseMimeType: 'application/json',
-    },
+    input: prompt,
   });
 
-  return response.text.trim();
+  const rawText = interaction.output_text.trim();
+  const cleanJson = rawText.replace(/```json|```/g, '').trim();
+
+  return JSON.parse(cleanJson);
 }

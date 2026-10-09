@@ -61,15 +61,14 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
 
     setIsGeneratingCv(true);
     try {
-      const summary = await generateCvSummaryFromAI(
-        cvData.personalInfo,
-        cvData.skills,
-        targetJob,
-        finalScore
-      );
-      if (updateCvSummary) updateCvSummary(summary);
+      const aiContent = await generateCvContentFromAI(cvData.skills, targetJob);
+      
+      updateCvSummary({
+        summary: aiContent.summary,
+        highlights: aiContent.highlights,
+      });
     } catch (error) {
-      console.error('Gagal membuat ringkasan CV dari AI:', error);
+      console.error('Gagal generate konten CV dari AI:', error);
     } finally {
       setIsGeneratingCv(false);
     }

@@ -2,11 +2,20 @@ import React from 'react';
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx';
 import { saveAs } from 'file-saver';
 import { useCareerUp } from '../../../context/CareerUpContext';
-import styles from './CvPreview.module.css';
+import styles from './CVPreview.module.css';
 
 export default function CvPreview({ onPrevStep }) {
   const { cvData } = useCareerUp();
-  const { personalInfo, skills } = cvData;
+  const { personalInfo, skills, cvSummary } = cvData;
+
+  const defaultSummary = 'Profesional berorientasi pada hasil dengan keahlian teknis teruji, beradaptasi cepat dengan alur kerja modern, serta siap memberikan kontribusi nyata bagi pencapaian target perusahaan.';
+
+  const summaryText = cvSummary?.summary || defaultSummary;
+  const highlightsList = cvSummary?.highlights || [
+    'Memiliki kompetensi teknis yang telah divalidasi melalui pengujian terstruktur.',
+    'Mampu menyelaraskan kualifikasi diri dengan deskripsi dan kebutuhan spesifik posisi yang ditargetkan.',
+    'Terbiasa bekerja secara mandiri maupun berkolaborasi dalam tim secara efektif.'
+  ];
 
   const handleDownloadDocx = async () => {
     const doc = new Document({
@@ -51,7 +60,7 @@ export default function CvPreview({ onPrevStep }) {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: 'Profesional yang berdedikasi tinggi dan berfokus pada hasil dengan keahlian teruji di bidangnya. Terbiasa memecahkan masalah secara efisien, beradaptasi dengan alur kerja modern, serta siap memberikan kontribusi nyata bagi pencapaian target perusahaan.',
+                  text: summaryText,
                   size: 20,
                   font: 'Arial',
                 }),
@@ -94,36 +103,18 @@ export default function CvPreview({ onPrevStep }) {
                 }),
               ],
             }),
-            new Paragraph({
-              bullet: { level: 0 },
-              children: [
-                new TextRun({
-                  text: 'Memiliki kompetensi teknis yang telah divalidasi melalui pengujian terstruktur.',
-                  size: 20,
-                  font: 'Arial',
-                }),
-              ],
-            }),
-            new Paragraph({
-              bullet: { level: 0 },
-              children: [
-                new TextRun({
-                  text: 'Mampu menyelaraskan kualifikasi diri dengan deskripsi dan kebutuhan spesifik posisi yang ditargetkan.',
-                  size: 20,
-                  font: 'Arial',
-                }),
-              ],
-            }),
-            new Paragraph({
-              bullet: { level: 0 },
-              children: [
-                new TextRun({
-                  text: 'Terbiasa bekerja secara mandiri maupun berkolaborasi dalam tim secara efektif.',
-                  size: 20,
-                  font: 'Arial',
-                }),
-              ],
-            }),
+            ...highlightsList.map((item) => (
+              new Paragraph({
+                bullet: { level: 0 },
+                children: [
+                  new TextRun({
+                    text: item,
+                    size: 20,
+                    font: 'Arial',
+                  }),
+                ],
+              })
+            )),
           ],
         },
       ],
@@ -139,7 +130,7 @@ export default function CvPreview({ onPrevStep }) {
       <header className={styles.header}>
         <h2 className={styles.title}>Langkah 3: Hasil Akhir CV Standar ATS</h2>
         <p className={styles.subtitle}>
-          CV telah berhasil disusun dengan struktur pembacaan mesin yang optimal dan siap untuk diunduh dalam format Word.
+          CV telah berhasil disesuaikan secara dinamis oleh AI berdasarkan deskripsi pekerjaan dan keahlian Anda.
         </p>
       </header>
 
@@ -167,11 +158,7 @@ export default function CvPreview({ onPrevStep }) {
 
         <section className={styles.cvSection}>
           <h2 className={styles.cvSectionTitle}>Ringkasan Profesional</h2>
-          <p className={styles.cvText}>
-            Profesional yang berdedikasi tinggi dan berfokus pada hasil dengan keahlian teruji di bidangnya. 
-            Terbiasa memecahkan masalah secara efisien, beradaptasi dengan alur kerja modern, serta siap 
-            memberikan kontribusi nyata bagi pencapaian target perusahaan.
-          </p>
+          <p className={styles.cvText}>{summaryText}</p>
         </section>
 
         <section className={styles.cvSection}>
@@ -192,9 +179,9 @@ export default function CvPreview({ onPrevStep }) {
         <section className={styles.cvSection}>
           <h2 className={styles.cvSectionTitle}>Kualifikasi & Kompetensi ATS</h2>
           <ul className={styles.bulletList}>
-            <li>Memiliki kompetensi teknis yang telah divalidasi melalui pengujian terstruktur.</li>
-            <li>Mampu menyelaraskan kualifikasi diri dengan deskripsi dan kebutuhan spesifik posisi yang ditargetkan.</li>
-            <li>Terbiasa bekerja secara mandiri maupun berkolaborasi dalam tim secara efektif.</li>
+            {highlightsList.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
           </ul>
         </section>
       </div>
