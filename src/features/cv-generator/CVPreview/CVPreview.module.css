@@ -164,7 +164,20 @@
   margin-bottom: 4px;
 }
 
-/* CSS CETAK / PRINT */
+.previewLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .previewLayout {
+    max-width: 900px;
+  }
+}
+
 @media print {
   body * {
     visibility: hidden;

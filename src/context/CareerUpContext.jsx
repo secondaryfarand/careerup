@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 const CareerUpContext = createContext();
 
 const initialCvData = {
+  targetJob: '',
   personalInfo: {
     fullName: '',
     email: '',
@@ -42,6 +43,13 @@ export function CareerUpProvider({ children }) {
   const [photoData, setPhotoData] = useState(initialPhotoData);
   const [quizData, setQuizData] = useState(initialQuizData);
   const [activeTab, setActiveTab] = useState('landing');
+
+  const updateTargetJob = (targetJob) => {
+    setCvData((prev) => ({
+      ...prev,
+      targetJob,
+    }));
+  };
 
   const updatePersonalInfo = (info) => {
     setCvData((prev) => ({
@@ -172,6 +180,7 @@ export function CareerUpProvider({ children }) {
     quizData,
     activeTab,
     setActiveTab,
+    updateTargetJob,
     updatePersonalInfo,
     addExperience,
     updateExperience,

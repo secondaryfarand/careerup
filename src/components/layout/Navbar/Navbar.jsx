@@ -108,6 +108,16 @@ export default function Navbar({ onStartApp }) {
                 CV Generator
               </Link>
             </li>
+            <li>
+              <Link 
+                to="/interview" 
+                className={styles.navLink}
+                onClick={() => setIsOpen(false)}
+              >
+                <i className={`fa-solid fa-clipboard-question ${styles.navLinkIcon}`}></i>
+                Latihan Interview
+              </Link>
+            </li>
           </ul>
 
           <button 

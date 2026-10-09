@@ -5,6 +5,7 @@ import BackgroundRemover from './features/photo/BackgroundRemover';
 import BackgroundChanger from './features/photo/BackgroundChanger/BakcgroundChanger';
 import PasfotoCropper from './features/photo/PasfotoCropper/PasfotoCropper';
 import CvGenerator from './features/cv-generator/CVGenerator/CVGenerator';
+import AiInterview from './features/interview/AiInterview/AiInterview';
 
 function AppContent() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ function AppContent() {
       <Route path="/background-changer" element={<BackgroundChanger />} />
       <Route path="/pasfoto-cropper" element={<PasfotoCropper />} />
       <Route path="/cv-generator" element={<CvGenerator />} />
+      <Route path="/interview" element={<AiInterview />} />
     </Routes>
   );
 }

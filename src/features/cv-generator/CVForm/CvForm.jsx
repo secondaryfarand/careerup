@@ -3,9 +3,19 @@ import { useCareerUp } from '../../../context/CareerUpContext';
 import styles from './CvForm.module.css';
 
 export default function CvForm({ onNextStep }) {
-  const { cvData, updatePersonalInfo, addSkill, removeSkill } = useCareerUp();
+  const { cvData, updatePersonalInfo, addSkill, removeSkill, updateTargetJob } = useCareerUp();
   const [skillInput, setSkillInput] = useState('');
-  const [targetJob, setTargetJob] = useState('');
+
+  const targetJobValue = cvData.targetJob || '';
+
+  const handleTargetJobChange = (e) => {
+    const val = e.target.value;
+    if (typeof updateTargetJob === 'function') {
+      updateTargetJob(val);
+    } else if (typeof updatePersonalInfo === 'function') {
+      updatePersonalInfo({ targetJob: val });
+    }
+  };
 
   const handlePersonalChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +31,7 @@ export default function CvForm({ onNextStep }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onNextStep) onNextStep(targetJob);
+    if (onNextStep) onNextStep(targetJobValue);
   };
 
   return (
@@ -44,13 +54,14 @@ export default function CvForm({ onNextStep }) {
             <textarea
               className={styles.textarea}
               placeholder="Tempelkan deskripsi pekerjaan atau kualifikasi yang dipersyaratkan oleh perusahaan di sini..."
-              value={targetJob}
-              onChange={(e) => setTargetJob(e.target.value)}
+              value={cvData.targetJob || ''}
+              onChange={(e) => updateTargetJob(e.target.value)}
               required
             />
           </div>
         </div>
 
+        {/* ... Sisa input Personal Info & Skills tetap sama ... */}
         <div>
           <div className={styles.sectionTitle}>
             <i className="fa-solid fa-user"></i>
