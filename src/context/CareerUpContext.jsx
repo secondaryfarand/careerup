@@ -17,6 +17,10 @@ const initialCvData = {
   skills: [],
   certifications: [],
   projects: [],
+  cvSummary: {
+    summary: '',
+    highlights: [],
+  },
 };
 
 const initialPhotoData = {
@@ -91,7 +95,7 @@ export function CareerUpProvider({ children }) {
       }
       return {
         ...prev,
-        skills: [...prev.skills, { id: Date.now(), name: skillName, isValidated: false, score: null }],
+        skills: [...prev.skills, { id: Date.now(), name: skillName, isValidated: false, score: null, level: 'Intermediate' }],
       };
     });
   };
@@ -100,6 +104,24 @@ export function CareerUpProvider({ children }) {
     setCvData((prev) => ({
       ...prev,
       skills: prev.skills.filter((skill) => skill.id !== id),
+    }));
+  };
+
+  const updateSkillLevel = (skillId, level) => {
+    setCvData((prev) => ({
+      ...prev,
+      skills: prev.skills.map((skill) =>
+        skill.id === skillId ? { ...skill, level } : skill
+      ),
+    }));
+  };
+
+  const updateCvSummary = (summaryData) => {
+    setCvData((prev) => ({
+      ...prev,
+      cvSummary: typeof summaryData === 'string' 
+        ? { ...prev.cvSummary, summary: summaryData } 
+        : { ...prev.cvSummary, ...summaryData },
     }));
   };
 
@@ -118,7 +140,12 @@ export function CareerUpProvider({ children }) {
       ...prev,
       skills: prev.skills.map((skill) =>
         skill.id === skillId
-          ? { ...skill, isValidated: isPassed, score: `${score}/${totalQuestions}` }
+          ? { 
+              ...skill, 
+              isValidated: isPassed, 
+              score: `${score}/${totalQuestions}`,
+              level: isPassed ? 'Advanced' : 'Intermediate'
+            }
           : skill
       ),
     }));
@@ -140,6 +167,7 @@ export function CareerUpProvider({ children }) {
 
   const value = {
     cvData,
+    setCvData,
     photoData,
     quizData,
     activeTab,
@@ -152,6 +180,8 @@ export function CareerUpProvider({ children }) {
     removeEducation,
     addSkill,
     removeSkill,
+    updateSkillLevel,
+    updateCvSummary,
     updatePhoto,
     resetPhoto,
     saveQuizResult,

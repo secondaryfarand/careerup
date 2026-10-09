@@ -53,7 +53,7 @@ Format JSON murni tanpa markdown:
 `;
 
   const interaction = await ai.interactions.create({
-    model: 'gemini-3.8-flash',
+    model: 'gemini-2.5-flash',
     input: prompt,
   });
 

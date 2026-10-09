@@ -135,10 +135,10 @@ export default function CvPreview({ onPrevStep }) {
       </header>
 
       <div className={styles.actionBar}>
-        <button type="button" onClick={onPrevStep} className={styles.btnSecondary}>
+        {/* <button type="button" onClick={onPrevStep} className={styles.btnSecondary}>
           <i className="fa-solid fa-arrow-left"></i>
           <span>Kembali ke Kuis</span>
-        </button>
+        </button> */}
 
         <button type="button" onClick={handleDownloadDocx} className={styles.btnPrimary}>
           <i className="fa-solid fa-file-word"></i>

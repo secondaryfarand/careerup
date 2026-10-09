@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useCareerUp } from '../../../context/CareerUpContext';
-import { generateQuizFromAI, generateCvSummaryFromAI } from '../../../services/aiService';
+import { generateQuizFromAI, generateCvContentFromAI } from '../../../services/aiService';
 import styles from './SkillQuiz.module.css';
 
 export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
@@ -13,20 +13,51 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
   const [score, setScore] = useState(0);
   const [isGeneratingCv, setIsGeneratingCv] = useState(false);
 
+  // Ref untuk memastikan API AI HANYA dipanggil 1 kali
+  const isFetchedRef = useRef(false);
+
   useEffect(() => {
+    if (isFetchedRef.current) return;
+    isFetchedRef.current = true;
+
     async function fetchQuestions() {
       setLoading(true);
       try {
         const aiQuestions = await generateQuizFromAI(cvData.skills, targetJob);
         setQuestions(aiQuestions);
       } catch (error) {
-        console.error('Gagal mengambil kuis AI:', error);
+        console.warn('AI Rate Limit Exceeded / Error. Menggunakan fallback kuis lokal:', error);
+        
+        // Fallback Kuis Lokal jika API terlimit
+        const fallback = cvData.skills.length > 0
+          ? cvData.skills.map((s) => ({
+              skill: s.name,
+              question: `Seberapa jauh pemahaman Anda mengenai implementasi ${s.name}?`,
+              options: [
+                'Memahami konsep dasar dan sintaksis dasar',
+                'Mampu mengimplementasikan pada proyek nyata',
+                'Terbiasa dengan optimasi dan arsitektur tingkat lanjut',
+                'Baru mempelajari teori dasar'
+              ],
+              correct: 1
+            }))
+          : [
+              {
+                skill: 'Umum',
+                question: 'Seberapa familiar Anda dengan kebutuhan target pekerjaan ini?',
+                options: ['Sangat Familiar', 'Cukup Familiar', 'Masih Mempelajari', 'Baru Memulai'],
+                correct: 0
+              }
+            ];
+
+        setQuestions(fallback);
       } finally {
         setLoading(false);
       }
     }
+
     fetchQuestions();
-  }, [cvData.skills, targetJob]);
+  }, []); // Kosongkan dependency array agar tidak tertrigger ulang saat props/state berubah
 
   const handleSelectOption = (optionIndex) => {
     setSelectedAnswers({
@@ -55,20 +86,33 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
     setScore(finalScore);
     setIsCompleted(true);
 
-    cvData.skills.forEach((skill) => {
-      updateSkillLevel(skill.id, finalScore >= 70 ? 'Advanced' : 'Intermediate');
-    });
+    if (typeof updateSkillLevel === 'function' && cvData.skills) {
+      cvData.skills.forEach((skill) => {
+        updateSkillLevel(skill.id, finalScore >= 70 ? 'Advanced' : 'Intermediate');
+      });
+    }
 
     setIsGeneratingCv(true);
     try {
       const aiContent = await generateCvContentFromAI(cvData.skills, targetJob);
-      
-      updateCvSummary({
-        summary: aiContent.summary,
-        highlights: aiContent.highlights,
-      });
+      if (typeof updateCvSummary === 'function') {
+        updateCvSummary({
+          summary: aiContent.summary,
+          highlights: aiContent.highlights,
+        });
+      }
     } catch (error) {
-      console.error('Gagal generate konten CV dari AI:', error);
+      console.warn('Gagal membuat ringkasan CV dari AI (menggunakan ringkasan standar):', error);
+      if (typeof updateCvSummary === 'function') {
+        updateCvSummary({
+          summary: `Profesional dengan keahlian ${cvData.skills.map((s) => s.name).join(', ')} yang berfokus pada hasil dan siap berkontribusi pada posisi ${targetJob || 'target'}.`,
+          highlights: [
+            'Memiliki kompetensi teknis yang teruji.',
+            'Mampu bekerja secara mandiri maupun dalam tim.',
+            'Cepat beradaptasi dengan lingkungan kerja modern.'
+          ]
+        });
+      }
     } finally {
       setIsGeneratingCv(false);
     }
@@ -93,7 +137,7 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
         <header className={styles.header}>
           <h2 className={styles.title}>Langkah 2: Hasil Validasi Skill</h2>
           <p className={styles.subtitle}>
-            Kuis selesai. AI sedang menyesuaikan ringkasan narasi CV berdasarkan hasil pengujian Anda.
+            Kuis selesai. Narasi CV telah disesuaikan berdasarkan hasil pengujian Anda.
           </p>
         </header>
 
@@ -102,8 +146,8 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
           <h3 className={styles.scoreText}>{score} / 100</h3>
           <p className={styles.scoreDesc}>
             {score >= 70
-              ? 'Luar biasa! Keahlian Anda terbukti sangat solid. Narasi CV akan disusun dengan bobot kualifikasi tingkat tinggi.'
-              : 'Hasil validasi cukup baik. Narasi CV akan disesuaikan secara proporsional sesuai tingkat pemahaman Anda.'}
+              ? 'Luar biasa! Keahlian Anda terbukti sangat solid. Narasi CV disusun dengan bobot kualifikasi tingkat tinggi.'
+              : 'Hasil validasi cukup baik. Narasi CV disesuaikan secara proporsional sesuai tingkat pemahaman Anda.'}
           </p>
 
           <div className={styles.actionFooter} style={{ width: '100%', justifyContent: 'center' }}>
@@ -114,7 +158,7 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
               className={styles.btnPrimary}
             >
               <span>{isGeneratingCv ? 'AI Sedang Menyusun CV...' : 'Lihat & Unduh CV Standar ATS'}</span>
-              <i className={isGeneratingCv ? "fa-solid fa-spinner fa-spin" : "fa-solid fa-arrow-right"}></i>
+              <i className={isGeneratingCv ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-arrow-right'}></i>
             </button>
           </div>
         </div>
