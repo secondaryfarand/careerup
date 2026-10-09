@@ -71,10 +71,10 @@ export default function LandingPage({ onStartApp }) {
         <section className={styles.hero}>
           <div className={`container ${styles.heroContainer}`}>
             <div className={styles.heroContent}>
-              <div className={styles.badge}>
+              {/* <div className={styles.badge}>
                 <i className={`fa-solid fa-square ${styles.badgeIcon}`}></i>
                 <span>Hybrid AI Career Suite Solution</span>
-              </div>
+              </div> */}
               
               <h1 className={styles.heroTitle}>
                 Tingkatkan Peluang Karir dengan <span className={styles.highlight}>Career-Up</span>.

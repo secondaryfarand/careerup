@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useCareerUp } from '../../../context/CareerUpContext';
-
+import Navbar from '../../../components/layout/Navbar/Navbar';
+import Footer from '../../../components/layout/Footer/Footer';
 import PhotoNav from '../PhotoNav/PhotoNav';
 import styles from './PasfotoCropper.module.css';
 
@@ -76,98 +77,96 @@ export default function PasfotoCropper() {
     document.body.removeChild(link);
   };
 
-  if (!activeImage) {
-    return (
-      <div className={styles.container}>
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Navbar />
+
+      <main style={{ flex: 1 }} className={styles.container}>
+        {/* PhotoNav diletakkan di sini agar selalu muncul terlepas dari ketersediaan gambar */}
+        <PhotoNav />
+
         <header className={styles.header}>
           <h2 className={styles.title}>Pemotong Rasio Pasfoto</h2>
           <p className={styles.subtitle}>
-            Potong foto Anda secara presisi sesuai ukuran standar pasfoto resmi cetak atau berkas digital.
+            Atur rasio ukuran pasfoto (2x3, 3x4, 4x6), perbesaran, serta posisi vertikal secara presisi.
           </p>
         </header>
-        <div className={styles.emptyState}>
-          <i className={`fa-solid fa-crop-simple ${styles.emptyIcon}`}></i>
-          <p>Silakan unggah foto terlebih dahulu di menu <strong>AI Background Remover</strong>.</p>
-        </div>
-      </div>
-    );
-  }
 
-  return (
-    <div className={styles.container}>
-        <PhotoNav />
-      <header className={styles.header}>
-        <h2 className={styles.title}>Pemotong Rasio Pasfoto</h2>
-        <p className={styles.subtitle}>
-          Atur rasio ukuran pasfoto (2x3, 3x4, 4x6), perbesaran, serta posisi vertikal secara presisi.
-        </p>
-      </header>
+        {!activeImage ? (
+          <div className={styles.emptyState}>
+            <i className={`fa-solid fa-crop-simple ${styles.emptyIcon}`}></i>
+            <p>Silakan unggah foto terlebih dahulu di menu <strong>AI Background Remover</strong>.</p>
+          </div>
+        ) : (
+          <div className={styles.workspaceGrid}>
+            <div className={styles.controlsCard}>
+              <div>
+                <div className={styles.sectionLabel}>Pilih Ukuran Rasio</div>
+                <div className={styles.ratioGroup}>
+                  {ratios.map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      className={`${styles.ratioBtn} ${selectedRatio.label === item.label ? styles.ratioBtnActive : ''}`}
+                      onClick={() => {
+                        setSelectedRatio(item);
+                        updatePhoto({ aspectRatio: item.label });
+                      }}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-      <div className={styles.workspaceGrid}>
-        <div className={styles.controlsCard}>
-          <div>
-            <div className={styles.sectionLabel}>Pilih Ukuran Rasio</div>
-            <div className={styles.ratioGroup}>
-              {ratios.map((item) => (
-                <button
-                  key={item.label}
-                  type="button"
-                  className={`${styles.ratioBtn} ${selectedRatio.label === item.label ? styles.ratioBtnActive : ''}`}
-                  onClick={() => {
-                    setSelectedRatio(item);
-                    updatePhoto({ aspectRatio: item.label });
-                  }}
-                >
-                  {item.label}
-                </button>
-              ))}
+              <div className={styles.sliderGroup}>
+                <div className={styles.sliderHeader}>
+                  <span>Skala Zoom</span>
+                  <span>{Math.round(zoom * 100)}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="2.5"
+                  step="0.05"
+                  value={zoom}
+                  onChange={(e) => setZoom(parseFloat(e.target.value))}
+                  className={styles.slider}
+                />
+              </div>
+
+              <div className={styles.sliderGroup}>
+                <div className={styles.sliderHeader}>
+                  <span>Posisi Vertikal</span>
+                  <span>{offsetY}px</span>
+                </div>
+                <input
+                  type="range"
+                  min="-150"
+                  max="150"
+                  step="2"
+                  value={offsetY}
+                  onChange={(e) => setOffsetY(parseInt(e.target.value))}
+                  className={styles.slider}
+                />
+              </div>
+            </div>
+
+            <div className={styles.previewCard}>
+              <div className={styles.canvasWrapper}>
+                <canvas ref={canvasRef} className={styles.canvas} />
+              </div>
+
+              <button type="button" onClick={handleDownload} className={styles.btnPrimary}>
+                <i className="fa-solid fa-crop"></i>
+                <span>Unduh Pasfoto ({selectedRatio.label})</span>
+              </button>
             </div>
           </div>
+        )}
+      </main>
 
-          <div className={styles.sliderGroup}>
-            <div className={styles.sliderHeader}>
-              <span>Skala Zoom</span>
-              <span>{Math.round(zoom * 100)}%</span>
-            </div>
-            <input
-              type="range"
-              min="1"
-              max="2.5"
-              step="0.05"
-              value={zoom}
-              onChange={(e) => setZoom(parseFloat(e.target.value))}
-              className={styles.slider}
-            />
-          </div>
-
-          <div className={styles.sliderGroup}>
-            <div className={styles.sliderHeader}>
-              <span>Posisi Vertikal</span>
-              <span>{offsetY}px</span>
-            </div>
-            <input
-              type="range"
-              min="-150"
-              max="150"
-              step="2"
-              value={offsetY}
-              onChange={(e) => setOffsetY(parseInt(e.target.value))}
-              className={styles.slider}
-            />
-          </div>
-        </div>
-
-        <div className={styles.previewCard}>
-          <div className={styles.canvasWrapper}>
-            <canvas ref={canvasRef} className={styles.canvas} />
-          </div>
-
-          <button type="button" onClick={handleDownload} className={styles.btnPrimary}>
-            <i className="fa-solid fa-crop"></i>
-            <span>Unduh Pasfoto ({selectedRatio.label})</span>
-          </button>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }

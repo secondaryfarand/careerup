@@ -35,20 +35,20 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>
+          {/* <div>
             <h4 className={styles.colTitle}>Kompetisi</h4>
             <ul className={styles.linkList}>
               <li className={styles.linkItem}><a href="#about">Informatics Festival 2026</a></li>
               <li className={styles.linkItem}><a href="#about">Hybrid AI Suite</a></li>
               <li className={styles.linkItem}><a href="#about">Privasi Data</a></li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
 
       <div className={`container ${styles.bottomBar}`}>
         <p>© 2026 Career-Up Team. All rights reserved.</p>
-        <p>Dirancang untuk Informatics Festival 2026</p>
+        <p>semogaya Web Dev</p>
       </div>
     </footer>
   );

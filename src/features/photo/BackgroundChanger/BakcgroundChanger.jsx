@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useCareerUp } from '../../../context/CareerUpContext';
-
+import Navbar from '../../../components/layout/Navbar/Navbar';
+import Footer from '../../../components/layout/Footer/Footer';
 import PhotoNav from '../PhotoNav/PhotoNav';
 import styles from './BackgroundChanger.module.css';
 
@@ -57,77 +58,75 @@ export default function BackgroundChanger() {
     document.body.removeChild(link);
   };
 
-  if (!photoData.processedImage) {
-    return (
-      <div className={styles.container}>
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Navbar />
+
+      <main style={{ flex: 1 }} className={styles.container}>
+        {/* PhotoNav ditaruh di sini agar selalu muncul meski belum ada foto */}
+        <PhotoNav />
+
         <header className={styles.header}>
           <h2 className={styles.title}>Ganti Warna Latar Pasfoto</h2>
           <p className={styles.subtitle}>
             Ubah latar belakang pasfoto Anda menjadi warna resmi instansi atau kustom.
           </p>
         </header>
-        <div className={styles.emptyState}>
-          <i className={`fa-solid fa-image ${styles.emptyIcon}`}></i>
-          <p>Silakan hapus latar belakang foto terlebih dahulu di menu <strong>AI Background Remover</strong>.</p>
-        </div>
-      </div>
-    );
-  }
 
-  return (
-    <div className={styles.container}>
-      <PhotoNav />
-      <header className={styles.header}>
-        <h2 className={styles.title}>Ganti Warna Latar Pasfoto</h2>
-        <p className={styles.subtitle}>
-          Pilih warna latar resmi (Merah/Biru) atau atur warna khusus sesuai kebutuhan lamaran kerja.
-        </p>
-      </header>
+        {!photoData.processedImage ? (
+          <div className={styles.emptyState}>
+            <i className={`fa-solid fa-image ${styles.emptyIcon}`}></i>
+            <p>Silakan hapus latar belakang foto terlebih dahulu di menu <strong>AI Background Remover</strong>.</p>
+          </div>
+        ) : (
+          <div className={styles.workspaceGrid}>
+            <div className={styles.controlsCard}>
+              <div>
+                <div className={styles.sectionLabel}>Warna Resmi Standar</div>
+                <div className={styles.colorPresets}>
+                  {presets.map((preset) => (
+                    <button
+                      key={preset.hex}
+                      type="button"
+                      className={`${styles.colorBtn} ${selectedColor === preset.hex ? styles.colorBtnActive : ''}`}
+                      onClick={() => handleColorChange(preset.hex)}
+                    >
+                      <span className={styles.colorDot} style={{ backgroundColor: preset.hex }}></span>
+                      <span>{preset.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-      <div className={styles.workspaceGrid}>
-        <div className={styles.controlsCard}>
-          <div>
-            <div className={styles.sectionLabel}>Warna Resmi Standar</div>
-            <div className={styles.colorPresets}>
-              {presets.map((preset) => (
-                <button
-                  key={preset.hex}
-                  type="button"
-                  className={`${styles.colorBtn} ${selectedColor === preset.hex ? styles.colorBtnActive : ''}`}
-                  onClick={() => handleColorChange(preset.hex)}
-                >
-                  <span className={styles.colorDot} style={{ backgroundColor: preset.hex }}></span>
-                  <span>{preset.label}</span>
-                </button>
-              ))}
+              <div>
+                <div className={styles.sectionLabel}>Pilih Warna Custom</div>
+                <div className={styles.customColorWrapper}>
+                  <input
+                    type="color"
+                    value={selectedColor}
+                    onChange={(e) => handleColorChange(e.target.value)}
+                    className={styles.colorInput}
+                  />
+                  <span className={styles.colorHexText}>{selectedColor.toUpperCase()}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.previewCard}>
+              <div className={styles.canvasWrapper}>
+                <canvas ref={canvasRef} className={styles.canvas} />
+              </div>
+
+              <button type="button" onClick={handleDownload} className={styles.btnPrimary}>
+                <i className="fa-solid fa-download"></i>
+                <span>Unduh Pasfoto Resmi HD</span>
+              </button>
             </div>
           </div>
+        )}
+      </main>
 
-          <div>
-            <div className={styles.sectionLabel}>Pilih Warna Custom</div>
-            <div className={styles.customColorWrapper}>
-              <input
-                type="color"
-                value={selectedColor}
-                onChange={(e) => handleColorChange(e.target.value)}
-                className={styles.colorInput}
-              />
-              <span className={styles.colorHexText}>{selectedColor.toUpperCase()}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.previewCard}>
-          <div className={styles.canvasWrapper}>
-            <canvas ref={canvasRef} className={styles.canvas} />
-          </div>
-
-          <button type="button" onClick={handleDownload} className={styles.btnPrimary}>
-            <i className="fa-solid fa-download"></i>
-            <span>Unduh Pasfoto Resmi HD</span>
-          </button>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }
