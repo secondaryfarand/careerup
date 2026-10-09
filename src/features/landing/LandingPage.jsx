@@ -108,7 +108,7 @@ export default function LandingPage({ onStartApp }) {
               </div>
 
               <div className={styles.floatingBadgeCard}>
-                <div className={styles.badgeTitle}>Career-Up Suite 24/7</div>
+                <div className={styles.badgeTitle}>Career-Up</div>
                 <div className={styles.badgeSubtitle}>Client-Side AI & Trusted ATS Format</div>
                 <div className={styles.stars}>
                   <i className="fa-solid fa-star"></i>

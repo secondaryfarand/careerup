@@ -4,6 +4,7 @@ import LandingPage from './features/landing/LandingPage';
 import BackgroundRemover from './features/photo/BackgroundRemover';
 import BackgroundChanger from './features/photo/BackgroundChanger/BakcgroundChanger';
 import PasfotoCropper from './features/photo/PasfotoCropper/PasfotoCropper';
+import CvGenerator from './features/cv-generator/CVGenerator/CVGenerator';
 
 function AppContent() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function AppContent() {
       <Route path="/background-remover" element={<BackgroundRemover />} />
       <Route path="/background-changer" element={<BackgroundChanger />} />
       <Route path="/pasfoto-cropper" element={<PasfotoCropper />} />
+      <Route path="/cv-generator" element={<CvGenerator />} />
     </Routes>
   );
 }

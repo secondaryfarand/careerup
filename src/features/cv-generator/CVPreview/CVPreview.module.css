@@ -1,0 +1,187 @@
+.container {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.actionBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.btnPrimary, .btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.btnPrimary {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+.btnPrimary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btnSecondary {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.btnSecondary:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.btnPrimary:active, .btnSecondary:active {
+  transform: scale(0.98);
+}
+
+/* KERTAS PRATINJAU CV STANDAR ATS */
+.paper {
+  background-color: #ffffff;
+  color: #111827;
+  padding: 40px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cvHeader {
+  border-bottom: 2px solid #111827;
+  padding-bottom: 16px;
+  text-align: center;
+}
+
+.cvName {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 0 6px 0;
+  color: #111827;
+  letter-spacing: 0.05em;
+}
+
+.cvContact {
+  font-size: 0.85rem;
+  color: #374151;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cvSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cvSectionTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 4px;
+  margin: 0;
+  color: #111827;
+  letter-spacing: 0.03em;
+}
+
+.cvText {
+  font-size: 0.875rem;
+  color: #1f2937;
+  margin: 0;
+}
+
+.skillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.skillItem {
+  font-size: 0.85rem;
+  background-color: #f3f4f6;
+  color: #111827;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.bulletList {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.875rem;
+  color: #1f2937;
+}
+
+.bulletList li {
+  margin-bottom: 4px;
+}
+
+/* CSS CETAK / PRINT */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .paper, .paper * {
+    visibility: visible;
+  }
+  .paper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+  .container, .header, .actionBar {
+    display: none !important;
+  }
+}

@@ -53,6 +53,41 @@ export default function Navbar({ onStartApp }) {
                 Beranda
               </Link>
             </li>
+            {/* <li>
+              <Link 
+                to="/" 
+                className={styles.navLink}
+                onClick={() => setIsOpen(false)}
+              ></Link>
+              <a 
+                href="#features" 
+                className={styles.navLink}
+                onClick={() => setIsOpen(false)}
+              >
+                <i className={`fa-solid fa-wand-magic-sparkles ${styles.navLinkIcon}`}></i>
+                Fitur
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#about" 
+                className={styles.navLink}
+                onClick={() => setIsOpen(false)}
+              >
+                <i className={`fa-solid fa-circle-info ${styles.navLinkIcon}`}></i>
+                Tentang
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#faq" 
+                className={styles.navLink}
+                onClick={() => setIsOpen(false)}
+              >
+                <i className={`fa-solid fa-circle-question ${styles.navLinkIcon}`}></i>
+                FAQ
+              </a>
+            </li> */}
             <li>
               <Link 
                 to="/background-remover" 
