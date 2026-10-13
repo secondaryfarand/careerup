@@ -125,7 +125,7 @@ export default function CvForm({ onNextStep }) {
               className={styles.input}
               placeholder="Contoh: Admin Kantor"
               value={cvData.targetJob}
-              onChange={(e) => updateJobDesc(e.target.value)}
+              onChange={(e) => updateTargetJob(e.target.value)}
             />
             </div>
         </div>
@@ -142,7 +142,7 @@ export default function CvForm({ onNextStep }) {
               className={styles.textarea}
               placeholder="Tempelkan deskripsi pekerjaan atau kualifikasi yang dipersyaratkan oleh perusahaan di sini..."
               value={cvData.jobDescription || ''}
-              onChange={(e) => updateTargetJob(e.target.value)}
+              onChange={(e) => updateJobDescription(e.target.value)}
               required
             />
           </div>
