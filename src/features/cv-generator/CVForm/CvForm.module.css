@@ -51,6 +51,13 @@
   margin-bottom: 16px;
 }
 
+.sectionTitle.sectionTitleJustify {
+  justify-content: space-between;
+}
+.sectionTitleJustify i{
+  padding-right: 10px;
+}
+
 .gridTwo {
   display: grid;
   grid-template-columns: 1fr;
@@ -123,6 +130,7 @@
   font-size: 0.85rem;
 }
 
+
 .btnPrimary, .btnSecondary {
   display: inline-flex;
   align-items: center;
@@ -160,6 +168,23 @@
 
 .btnPrimary:active, .btnSecondary:active {
   transform: scale(0.98);
+}
+
+.deleteBtn {
+  background-color: var(--danger-light);
+  color: var(--danger);
+  border: none;
+  padding: 0 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--transition-fast);
+}
+
+.deleteBtn:hover {
+  opacity: 0.85;
 }
 
 .actionFooter {

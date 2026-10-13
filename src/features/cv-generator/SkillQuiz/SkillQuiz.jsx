@@ -10,7 +10,7 @@ import QuizResult from './components/QuizResult';
 import styles from './SkillQuiz.module.css';
 
 export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
-  const { cvData, updateSkillLevel, updateCvSummary } = useCareerUp();
+  const { cvData, updateSkillLevel, updateCvSummary, updateCvSection, } = useCareerUp();
   
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
   const handleStartQuiz = async () => {
     setLoading(true);
     try {
-      const aiQuestions = await generateQuizFromAI(cvData.skills, targetJob);
+      const aiQuestions = await generateQuizFromAI(cvData.skills, cvData.targetJob);
       setQuestions(aiQuestions);
     } catch (error) {
       console.warn('AI Error / Rate Limit. Menggunakan fallback kuis lokal:', error);
@@ -56,24 +56,44 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
   const handleSkipQuiz = async () => {
     setIsGeneratingCv(true);
     try {
-      const aiContent = await generateCvContentFromAI(cvData.skills, targetJob);
+      const aiContent = await generateCvContentFromAI(cvData.skills, cvData.targetJob, cvData.jobDescription, cvData.workExperience, cvData.education);
       if (typeof updateCvSummary === 'function') {
         updateCvSummary({
           summary: aiContent.summary,
           highlights: aiContent.highlights,
+          // coverLetter: aiContent.coverLetter,
+          // emailPitch: aiContent.emailPitch
         });
+      }
+      if (aiContent.coverLetter && typeof updateCvSection === 'function') {
+        updateCvSection('suratLamaran', aiContent.coverLetter);
+      }
+
+      if (aiContent.emailPitch && typeof updateCvSection === 'function') {
+        updateCvSection('emailPitch', aiContent.emailPitch);
+      }
+
+      if (aiContent.workExperience && typeof updateCvSection === 'function') {
+        updateCvSection('workExperience', aiContent.workExperience);
+      }
+
+      if (aiContent.education && typeof updateCvSection === 'function') {
+        updateCvSection('education', aiContent.education);
       }
     } catch (error) {
       console.warn('Gagal membuat ringkasan CV:', error);
       if (typeof updateCvSummary === 'function') {
         updateCvSummary({
-          summary: `Profesional dengan keahlian ${cvData.skills?.map((s) => s.name).join(', ')} yang siap berkontribusi pada posisi ${targetJob || 'target'}.`,
+          summary: `Profesional dengan keahlian ${cvData.skills?.map((s) => s.name).join(', ')} yang siap berkontribusi pada posisi ${cvData.targetJob || 'target'}.`,
           highlights: [
             'Memiliki kompetensi teknis yang teruji.',
             'Mampu bekerja secara mandiri maupun dalam tim.',
             'Cepat beradaptasi dengan lingkungan kerja modern.'
-          ]
+          ], 
+          coverLetter: "",
+          emailPitch: ""
         });
+        
       }
     } finally {
       setIsGeneratingCv(false);
@@ -99,7 +119,7 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
 
     setIsGeneratingCv(true);
     try {
-      const aiContent = await generateCvContentFromAI(cvData.skills, targetJob);
+      const aiContent = await generateCvContentFromAI(cvData.skills, cvData.targetJob);
       if (typeof updateCvSummary === 'function') {
         updateCvSummary({
           summary: aiContent.summary,

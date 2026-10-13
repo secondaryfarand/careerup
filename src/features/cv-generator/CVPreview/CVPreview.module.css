@@ -35,6 +35,11 @@
   gap: 12px;
 }
 
+.btnContainer {
+  display: flex;
+  gap:  1rem;
+}
+
 .btnPrimary, .btnSecondary {
   display: inline-flex;
   align-items: center;
@@ -73,7 +78,6 @@
   transform: scale(0.98);
 }
 
-/* KERTAS PRATINJAU CV STANDAR ATS */
 .paper {
   background-color: #ffffff;
   color: #111827;
@@ -198,3 +202,5 @@
     display: none !important;
   }
 }
+
+

@@ -221,24 +221,27 @@ export default function AiInterview() {
           <div className={styles.perQuestionSection}>
             <h4>Detail Evaluasi Per Pertanyaan:</h4>
             {questions.map((q, idx) => {
-              const feedbackItem = evaluationResult.perQuestionFeedback?.find(
-                (f) => f.questionId === q.id
-              );
-              return (
-                <div key={q.id} className={styles.questionReviewCard}>
-                  <h5>
-                    #{idx + 1} {q.questionText}
-                  </h5>
-                  <p className={styles.userAnswerText}>
-                    <strong>Jawaban Anda:</strong> {answers[q.id] || '(Tidak ada jawaban)'}
-                  </p>
-                  <div className={styles.feedbackNote}>
-                    <small>Umpan Balik AI:</small>
-                    <p>{feedbackItem?.feedback || 'Jawaban telah ditinjau.'}</p>
-                  </div>
+            const feedbackItem = evaluationResult.perQuestionFeedback?.[idx] || 
+              evaluationResult.perQuestionFeedback?.find((f) => f.questionId === q.id);
+
+            return (
+              <div key={q.id} className={styles.questionReviewCard}>
+                <h5>
+                  #{idx + 1} {q.questionText}
+                </h5>
+                <p className={styles.userAnswerText}>
+                  <strong>Jawaban Anda:</strong> {answers[q.id] || '(Tidak ada jawaban)'}
+                </p>
+                <div className={styles.feedbackNote}>
+                  <small>Umpan Balik AI:</small>
+                  <p>{feedbackItem?.feedback || 'Jawaban telah ditinjau.'}</p>
+                  {feedbackItem?.score && (
+                    <span className={styles.scoreBadge}>Skor: {feedbackItem.score}</span>
+                  )}
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
           </div>
 
           <button type="button" onClick={handleReset} className={styles.btnPrimary}>

@@ -4,6 +4,7 @@ const CareerUpContext = createContext();
 
 const initialCvData = {
   targetJob: '',
+  jobDescription: '',
   personalInfo: {
     fullName: '',
     email: '',
@@ -21,6 +22,15 @@ const initialCvData = {
   cvSummary: {
     summary: '',
     highlights: [],
+  },
+  suratLamaran: {
+    opening: '',
+    body: '',
+    closing: '',
+  },
+  emailPitch: {
+    subject: '',
+    body: '',
   },
 };
 
@@ -48,6 +58,12 @@ export function CareerUpProvider({ children }) {
     setCvData((prev) => ({
       ...prev,
       targetJob,
+    }));
+  };
+  const updateJobDescription = (jobDescription) => {
+    setCvData((prev) => ({
+      ...prev,
+      jobDescription,
     }));
   };
 
@@ -124,12 +140,29 @@ export function CareerUpProvider({ children }) {
     }));
   };
 
-  const updateCvSummary = (summaryData) => {
+  // const updateCvSummary = (summaryData) => {
+  //   setCvData((prev) => ({
+  //     ...prev,
+  //     cvSummary: typeof summaryData === 'string' 
+  //       ? { ...prev.cvSummary, summary: summaryData } 
+  //       : { ...prev.cvSummary, ...summaryData },
+  //   }));
+  // };
+  const updateCvSummary = (aiResult) => {
     setCvData((prev) => ({
       ...prev,
-      cvSummary: typeof summaryData === 'string' 
-        ? { ...prev.cvSummary, summary: summaryData } 
-        : { ...prev.cvSummary, ...summaryData },
+      cvSummary: {
+        summary: aiResult.summary || prev.cvSummary.summary,
+        highlights: aiResult.highlights || prev.cvSummary.highlights,
+      },
+      suratLamaran: aiResult.coverLetter || prev.suratLamaran,
+      emailPitch: aiResult.emailPitch || prev.emailPitch,
+    }));
+  };
+  const updateCvSection = (sectionKey, data) => {
+    setCvData((prev) => ({
+      ...prev,
+      [sectionKey]: data,
     }));
   };
 
@@ -181,6 +214,7 @@ export function CareerUpProvider({ children }) {
     activeTab,
     setActiveTab,
     updateTargetJob,
+    updateJobDescription,
     updatePersonalInfo,
     addExperience,
     updateExperience,
@@ -191,6 +225,7 @@ export function CareerUpProvider({ children }) {
     removeSkill,
     updateSkillLevel,
     updateCvSummary,
+    updateCvSection,
     updatePhoto,
     resetPhoto,
     saveQuizResult,

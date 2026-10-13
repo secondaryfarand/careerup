@@ -167,13 +167,10 @@
 .scoreBadge {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   justify-content: center;
-  min-width: 100px;
-  height: 100px;
-  background: #3b82f6;
-  color: #ffffff;
-  border-radius: 50%;
+  color: #1a1919;
+  font-weight: bold;
 }
 
 .scoreNumber {

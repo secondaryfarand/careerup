@@ -1,0 +1,26 @@
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .paper, .paper * {
+    visibility: visible;
+  }
+  .paper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20mm;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    max-height: none;
+    overflow: visible;
+  }
+  .container, .header, .actionBar {
+    display: none !important;
+  }
+}
