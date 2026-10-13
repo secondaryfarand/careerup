@@ -119,7 +119,7 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
 
     setIsGeneratingCv(true);
     try {
-      const aiContent = await generateCvContentFromAI(cvData.skills, cvData.targetJob);
+      const aiContent = await generateCvContentFromAI(cvData.skills, cvData.targetJob, cvData.jobDescription, cvData.workExperience, cvData.education);
       if (typeof updateCvSummary === 'function') {
         updateCvSummary({
           summary: aiContent.summary,
