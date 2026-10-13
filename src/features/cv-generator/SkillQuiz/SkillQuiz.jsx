@@ -153,7 +153,14 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
           onNextStep={onNextStep}
         />
       ) : loading ? (
-        <QuizLoading />
+        <QuizLoading 
+          targetJob={targetJob|| cvData.targetJob || ''}
+          onStart={handleStartQuiz}
+          onSkip={handleSkipQuiz}
+          onPrev={onPrevStep}
+          isGeneratingCv={isGeneratingCv}
+          loading={loading}
+        />
       ) : questions.length === 0 ? (
         <QuizLanding
           targetJob={targetJob|| cvData.targetJob || ''}
@@ -162,6 +169,7 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
           onSkip={handleSkipQuiz}
           onPrev={onPrevStep}
           isGeneratingCv={isGeneratingCv}
+          loading={loading}
         />
       ) : (
         <QuizQuestion

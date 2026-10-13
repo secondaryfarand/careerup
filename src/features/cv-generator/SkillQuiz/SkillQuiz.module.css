@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 850px;
   margin: 0 auto;
-  padding: 24px 2rem;
+  padding: 24px 0rem;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -148,6 +148,10 @@
 }
 
 .btnPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btnSecondary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

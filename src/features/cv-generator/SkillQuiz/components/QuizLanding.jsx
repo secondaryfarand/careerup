@@ -3,7 +3,7 @@ import styles from '../SkillQuiz.module.css';
 
 import AtsScoreWidget from '../../../../components/common/AtsScoreWidget/AtsScoreWidget';
 
-export default function QuizLanding({ targetJob, skills, onStart, onSkip, onPrev, isGeneratingCv }) {
+export default function QuizLanding({ targetJob, skills, onStart, onSkip, onPrev, isGeneratingCv, loading }) {
   console.log(targetJob)
   const skillTextContent = skills?.map((s) => s.name).join(' ') || '';
   return (
@@ -19,11 +19,11 @@ export default function QuizLanding({ targetJob, skills, onStart, onSkip, onPrev
         <button type="button" onClick={onPrev} className={styles.btnSecondary}>
           <i className="fa-solid fa-arrow-left"></i> Kembali
         </button>
-        <button type="button" onClick={onSkip} disabled={isGeneratingCv} className={styles.btnSecondary}>
+        <button type="button" onClick={onSkip} disabled={loading || isGeneratingCv} className={styles.btnSecondary}>
           <span>{isGeneratingCv ? 'Menyusun CV...' : 'Lewati Kuis'}</span>
         </button>
-        <button type="button" onClick={onStart} className={styles.btnPrimary}>
-          <span>Mulai Kuis AI</span>
+        <button type="button" onClick={onStart} disabled={loading || isGeneratingCv} className={styles.btnPrimary}>
+          <span>{loading ? 'Menyusun Kuis...' : 'Mulai Kuis'}</span>
           <i className="fa-solid fa-play"></i>
         </button>
       </div>
