@@ -3,7 +3,7 @@ import styles from '../SkillQuiz.module.css';
 
 export default function QuizLanding({ targetJob,  onStart, onSkip, onPrev, isGeneratingCv, loading }) {
   return (
-    <div className={styles.quizCard} style={{ textAlign: 'center', padding: '0px' }}>
+    <div className={styles.quizCard} style={{ textAlign: 'center', padding: '10px' }}>
       <i className="fa-solid fa-graduation-cap" style={{ fontSize: '2.5rem', color: 'var(--primary)', marginBottom: '16px' }}></i>
       <h3>Uji Keahlian Anda dengan AI</h3>
       <p style={{ margin: '12px 0 24px', color: 'var(--text-secondary)' }}>

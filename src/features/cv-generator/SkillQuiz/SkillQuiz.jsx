@@ -112,11 +112,43 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
     setIsCompleted(true);
 
     if (typeof updateSkillLevel === 'function' && cvData.skills) {
+      const skillPerformance = {};
+      questions.forEach((q, idx) => {
+        const isCorrect = selectedAnswers[idx] === q.correct;
+        const skillName = q.skill;
+
+        if (skillName) {
+          if (!skillPerformance[skillName]) {
+            skillPerformance[skillName] = { correct: 0, total: 0 };
+          }
+          skillPerformance[skillName].total += 1;
+          if (isCorrect) {
+            skillPerformance[skillName].totalCorrect += 1; 
+            skillPerformance[skillName].correct += 1;
+          }
+        }
+      });
       cvData.skills.forEach((skill) => {
-        updateSkillLevel(skill.id, finalScore >= 70 ? 'Advanced' : 'Intermediate');
+        const stats = skillPerformance[skill.name];
+        
+        if (stats && stats.total > 0) {
+          const individualScore = (stats.correct / stats.total) * 100;
+          
+          let dynamicLevel = 'Intermediate';
+          if (individualScore >= 80) {
+            dynamicLevel = 'Advanced';
+          } else if (individualScore >= 50) {
+            dynamicLevel = 'Intermediate';
+          } else {
+            dynamicLevel = 'Beginner';
+          }
+
+          updateSkillLevel(skill.id, dynamicLevel);
+        } else {
+          updateSkillLevel(skill.id, finalScore >= 70 ? 'Advanced' : 'Intermediate');
+        }
       });
     }
-
     setIsGeneratingCv(true);
     try {
       const aiContent = await generateCvContentFromAI(cvData.skills, cvData.targetJob, cvData.jobDescription, cvData.workExperience, cvData.education);
@@ -125,9 +157,37 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
           summary: aiContent.summary,
           highlights: aiContent.highlights,
         });
+        if (aiContent.coverLetter && typeof updateCvSection === 'function') {
+          updateCvSection('suratLamaran', aiContent.coverLetter);
+        }
+
+        if (aiContent.emailPitch && typeof updateCvSection === 'function') {
+          updateCvSection('emailPitch', aiContent.emailPitch);
+        }
+
+        if (aiContent.workExperience && typeof updateCvSection === 'function') {
+          updateCvSection('workExperience', aiContent.workExperience);
+        }
+
+        if (aiContent.education && typeof updateCvSection === 'function') {
+          updateCvSection('education', aiContent.education);
+        }
       }
     } catch (error) {
-      console.warn('Gagal membuat ringkasan CV standar:', error);
+      console.warn('Gagal membuat ringkasan CV:', error);
+      if (typeof updateCvSummary === 'function') {
+        updateCvSummary({
+          summary: `Profesional dengan keahlian ${cvData.skills?.map((s) => s.name).join(', ')} yang siap berkontribusi pada posisi ${cvData.targetJob || 'target'}.`,
+          highlights: [
+            'Memiliki kompetensi teknis yang teruji.',
+            'Mampu bekerja secara mandiri maupun dalam tim.',
+            'Cepat beradaptasi dengan lingkungan kerja modern.'
+          ], 
+          coverLetter: "",
+          emailPitch: ""
+        });
+        
+      }
     } finally {
       setIsGeneratingCv(false);
     }

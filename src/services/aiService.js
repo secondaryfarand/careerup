@@ -5,6 +5,7 @@ const apiKeys = [
   import.meta.env.VITE_GEMINI_API_KEY_2,
   import.meta.env.VITE_GEMINI_API_KEY_3,
   import.meta.env.VITE_GEMINI_API_KEY_4,
+  import.meta.env.VITE_GEMINI_API_KEY_5,
   import.meta.env.VITE_GEMINI_API_KEY_NULL,
 ].filter(Boolean);
 let currentKeyIndex = 0;
@@ -87,12 +88,6 @@ export async function generateQuizFromAI(skills, jobDescription) {
     [{"skill":"","question":"","options":["","","",""],"correct":0}]
     `;
 
-  // const interaction = await ai.interactions.create({
-  //   model: 'gemini-3.8-flash',
-  //   input: prompt,
-  // });
-
-  // const rawText = interaction.output_text.trim();
   const rawText = await callGeminiWithFallback( "Generate Quiz", async (ai) => {
     const interaction = await ai.models.generateContent({
       model: 'gemini-3.8-flash', 
@@ -109,13 +104,24 @@ export async function generateCvContentFromAI(skills, targetJob, jobDescription,
 // export async function generateCvContentFromAI(skills, jobDescription) {
   const prompt = `
 Bertindaklah sebagai Senior ATS Resume Expert dan AI Career Assistant. Berdasarkan data profesional anonim berikut:
-- Target Posisi: ${targetJob}
-- Job Description: ${jobDescription}
-- Keahlian Pengguna (dan hasil kuis): ${JSON.stringify(skills)}
-- Pengalaman Kerja Mentah: ${JSON.stringify(workExperience)}
-- Pendidikan Mentah: ${JSON.stringify(education)}
+- Target Posisi: 
+${targetJob}
+- Job Description: 
+${jobDescription}
+- Keahlian Pengguna (dan hasil kuis): 
+${JSON.stringify(skills)}
+- Pengalaman Kerja Mentah: 
+${JSON.stringify(workExperience)}
+- Pendidikan Mentah: 
+${JSON.stringify(education)}
 
-Tolong buatkan struktur data JSON yang lengkap, profesional, dan dioptimalkan untuk ATS. Kembangkan poin-poin pengalaman agar berorientasi pada dampak (action-oriented & quantified).
+INSTRUKSI UTAMA & ATURAN KETAT:
+1. PENGALAMAN KERJA & PENDIDIKAN:
+   - Jika "Pengalaman Kerja Mentah" kosong, bernilai null, atau tidak ada isinya, kembalikan array kosong ([]) untuk "workExperience". JANGAN MENGARANG atau membuat data palsu!
+   - Jika "Pendidikan Mentah" kosong, kembalikan array kosong ([]) untuk "education". JANGAN MENGARANG!
+   - Jika data tersebut ada, tugas Anda HANYA memparafrase (merapikan tata bahasa, merapikan struktur kalimat agar profesional dan ATS-friendly) berdasarkan data mentah yang diberikan. DILARANG keras menambahkan, melebih-lebihkan, atau memanipulasi fakta (misalnya menambah jabatan fiktif, menambah perusahaan fiktif, atau menambah tahun yang tidak ada di data mentah).
+2. ATS OPTIMIZATION: Kembangkan poin-poin deskripsi tugas secara profesional tanpa mengubah esensi fakta asli dari pengguna.
+
 Kembalikan HANYA format JSON murni TANPA markdown block (\`\`\`json).
 
 Struktur JSON wajib:
@@ -124,17 +130,17 @@ Struktur JSON wajib:
   "highlights": ["Poin keunggulan 1", "Poin keunggulan 2"],
   "workExperience": [
     {
-      "role": "Judul Posisi yang disempurnakan",
-      "company": "Nama Perusahaan",
-      "period": "Periode",
-      "description": "Deskripsi tugas dan pencapaian profesional yang kuat (ATS-friendly)."
+      "role": "Judul Posisi (diparafrase dari data mentah)",
+      "company": "Nama Perusahaan (sesuai data mentah)",
+      "period": "Periode (sesuai data mentah)",
+      "description": "Deskripsi tugas yang diparafrase agar profesional tanpa menambah fakta fiktif."
     }
   ],
   "education": [
     {
-      "degree": "Gelar / Jurusan",
-      "institution": "Nama Universitas",
-      "year": "Tahun"
+      "degree": "Gelar / Jurusan (sesuai data mentah)",
+      "institution": "Nama Universitas (sesuai data mentah)",
+      "year": "Tahun (sesuai data mentah)"
     }
   ],
   "skills": [
