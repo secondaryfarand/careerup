@@ -8,7 +8,6 @@ const JobPosterScanner = ({ onExtractSuccess }) => {
   const [progress, setProgress] = useState(0);
   const [statusText, setStatusText] = useState('');
 
-  // Fungsi untuk memproses gambar (Grayscale & Peningkatan Kontras via Canvas)
   const preprocessImage = (imageFile) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -18,32 +17,26 @@ const JobPosterScanner = ({ onExtractSuccess }) => {
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
           
-          // Skala ukuran agar optimal untuk OCR (tidak terlalu besar/kecil)
           canvas.width = img.width;
           canvas.height = img.height;
 
-          // Gambar ke canvas
           ctx.drawImage(img, 0, 0);
 
-          // Ambil data piksel untuk manipulasi warna (Grayscale & Kontras)
           const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           const data = imgData.data;
 
           for (let i = 0; i < data.length; i += 4) {
-            // Ubah ke grayscale
             let avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
             
-            // Tingkatkan kontras sederhana (Thresholding manual untuk mempertegas teks)
             let contrast = avg > 140 ? 255 : 0; 
 
-            data[i]     = contrast; // R
-            data[i + 1] = contrast; // G
-            data[i + 2] = contrast; // B
+            data[i]     = contrast; 
+            data[i + 1] = contrast; 
+            data[i + 2] = contrast; 
           }
 
           ctx.putImageData(imgData, 0, 0);
           
-          // Kembalikan sebagai URL gambar baru
           resolve(canvas.toDataURL('image/jpeg'));
         };
         img.src = event.target.result;
@@ -61,16 +54,14 @@ const JobPosterScanner = ({ onExtractSuccess }) => {
     setStatusText('Memproses dan mempertajam gambar...');
 
     try {
-      // 1. Jalankan prapemrosesan gambar
       const processedImageUrl = await preprocessImage(file);
 
       setProgress(30);
       setStatusText('Menyiapkan mesin OCR...');
 
-      // 2. Inisialisasi Tesseract worker dengan parameter khusus poster
       const worker = await createWorker('ind+eng');
       await worker.setParameters({
-        tessedit_pageseg_mode: '3', // Fully automatic page segmentation
+        tessedit_pageseg_mode: '3', 
       });
 
       setProgress(50);
@@ -83,7 +74,6 @@ const JobPosterScanner = ({ onExtractSuccess }) => {
       setStatusText('Menganalisis hasil teks...');
       await worker.terminate();
 
-      // 3. Jalankan pemilahan teks cerdas
       const parsedData = parseJobPosterSmart(rawText);
 
       setProgress(100);
@@ -99,14 +89,12 @@ const JobPosterScanner = ({ onExtractSuccess }) => {
     }
   };
 
-  // Algoritma Heuristik Cerdas untuk Mencari Posisi & Deskripsi Loker
     const parseJobPosterSmart = (text) => {
         const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
         
         let detectedJobTitle = '';
-        let detectedDescription = text; // Keseluruhan teks masuk ke jobDescription
+        let detectedDescription = text; 
 
-        // Cari baris yang berada setelah kata kunci posisi / untuk posisi
         for (let i = 0; i < lines.length; i++) {
         const lowerLine = lines[i].toLowerCase();
         
@@ -118,7 +106,6 @@ const JobPosterScanner = ({ onExtractSuccess }) => {
         }
         }
 
-        // Jika tidak ketemu dengan kata kunci, cari kata kunci peran umum
         if (!detectedJobTitle) {
         const commonRoles = ['admin', 'developer', 'engineer', 'manager', 'staff', 'analyst', 'designer', 'officer'];
         for (const line of lines) {
@@ -139,11 +126,8 @@ const JobPosterScanner = ({ onExtractSuccess }) => {
   return (
     <div className={styles.scannerContainer}>
       <h4 className={styles.scannerHeader}>
-        {/* <i className={`fa-solid fa-wand-magic-sparkles ${styles.scannerIcon}`}></i> */}
-        {/* Upload Poster / Screenshot Info Loker (Auto-Fill) */}
       </h4>
 
-      {/* Modern Custom Dropzone */}
       <div className={styles.fileDropzone}>
         <input 
           type="file" 
@@ -161,7 +145,6 @@ const JobPosterScanner = ({ onExtractSuccess }) => {
         </div>
       </div>
 
-      {/* Styled Progress Bar */}
       {loading && (
         <div className={styles.progressContainer}>
           <div className={styles.progressInfo}>

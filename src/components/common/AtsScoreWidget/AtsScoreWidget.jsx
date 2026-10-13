@@ -3,7 +3,6 @@ import { calculateAtsScore } from '../../../utils/atsScorer';
 import styles from './AtsScoreWidget.module.css';
 
 export default function AtsScoreWidget({ jobDescription, cvContent }) {
-  // Hitung skor secara instan (memoized agar tidak menghitung ulang tanpa perubahan props)
   const { score, matchedKeywords } = useMemo(() => {
     return calculateAtsScore(jobDescription, cvContent);
   }, [jobDescription, cvContent]);
@@ -21,16 +20,12 @@ export default function AtsScoreWidget({ jobDescription, cvContent }) {
     <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.titleGroup}>
-          {/* <i className={`fa-solid fa-bolt ${styles.titleIcon}`}></i> */}
           <h4 className={styles.title}>Analisis Skor ATS Real-time</h4>
         </div>
-        {/* <span className={styles.badgeLocal}>
-          <i className="fa-solid fa-microchip"></i> Client-Side AI
-        </span> */}
+
       </div>
 
       <div className={styles.scoreContainer}>
-        {/* Ring Chart Skor berbasis Conic Gradient */}
         <div 
           className={styles.scoreCircle} 
           style={{ '--score-percent': score }}
@@ -50,7 +45,6 @@ export default function AtsScoreWidget({ jobDescription, cvContent }) {
         </div>
       </div>
 
-      {/* Daftar Kata Kunci yang Cocok */}
       <div className={styles.keywordsSection}>
         <div className={styles.keywordsTitle}>Kata Kunci Terdeteksi ({matchedKeywords.length})</div>
         {matchedKeywords.length > 0 ? (

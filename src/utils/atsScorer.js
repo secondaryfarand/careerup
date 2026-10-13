@@ -41,7 +41,6 @@ export function calculateAtsScore(jobDescription, cvContent) {
   jobMagnitude = Math.sqrt(jobMagnitude);
   cvMagnitude = Math.sqrt(cvMagnitude);
 
-  // Cosine Similarity: (A · B) / (||A|| * ||B||)
   if (jobMagnitude === 0 || cvMagnitude === 0) {
     return { score: 0, matchedKeywords: [] };
   }
