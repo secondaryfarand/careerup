@@ -11,7 +11,6 @@ import styles from './AiInterview.module.css';
 export default function AiInterview() {
   const { cvData, updateTargetJob } = useCareerUp();
 
-  // Ambil dari Context jika ada, atau gunakan local state jika user langsung akses /interview
   const initialJob = cvData?.targetJob || cvData?.personalInfo?.targetJob || '';
   const [targetJob, setTargetJob] = useState(initialJob);
 
@@ -21,7 +20,6 @@ export default function AiInterview() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [evaluationResult, setEvaluationResult] = useState(null);
 
-  // Jika targetJob sudah terisi (baik dari Context maupun Modal Form)
   useEffect(() => {
     if (targetJob) {
       const randomQ = getRandomThreeQuestions(targetJob);
@@ -29,11 +27,10 @@ export default function AiInterview() {
     }
   }, [targetJob]);
 
-  // Handler saat user submit pekerjaan dari Modal
   const handleSetJob = (jobTitle) => {
     setTargetJob(jobTitle);
     if (typeof updateTargetJob === 'function') {
-      updateTargetJob(jobTitle); // Simpan juga ke Context agar ter-sync
+      updateTargetJob(jobTitle); 
     }
   };
 
@@ -83,7 +80,6 @@ export default function AiInterview() {
     setEvaluationResult(null);
   };
 
-  // 1. TAMPILKAN MODAL JIKA PADA AWAL USER BELUM MENGISI TARGET JOB
   if (!targetJob) {
     return <JobModal onSubmit={handleSetJob} />;
   }
@@ -115,7 +111,6 @@ export default function AiInterview() {
 
       {!evaluationResult ? (
         <div className={styles.card}>
-          {/* Progress Bar & Steps */}
           <div className={styles.progressTracker}>
             <span>Pertanyaan {currentIndex + 1} dari 3</span>
             <div className={styles.progressBar}>
@@ -126,13 +121,11 @@ export default function AiInterview() {
             </div>
           </div>
 
-          {/* Question Box */}
           <div className={styles.questionBox}>
             <span className={styles.categoryBadge}>{currentQ.category}</span>
             <h3 className={styles.questionText}>{currentQ.questionText}</h3>
           </div>
 
-          {/* Answer Textarea */}
           <div className={styles.inputGroup}>
             <label className={styles.label}>Jawaban Anda:</label>
             <textarea
@@ -144,7 +137,6 @@ export default function AiInterview() {
             />
           </div>
 
-          {/* Navigation Controls */}
           <div className={styles.actionFooter}>
             <button
               type="button"
