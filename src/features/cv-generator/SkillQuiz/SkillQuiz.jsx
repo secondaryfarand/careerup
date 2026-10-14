@@ -83,15 +83,29 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
     } catch (error) {
       console.warn('Gagal membuat ringkasan CV:', error);
       if (typeof updateCvSummary === 'function') {
+        const skillsText = cvData.skills?.map((s) => s.name).join(', ') || 'kompetensi profesional';
+        const targetPosition = cvData.targetJob || 'posisi yang dilamar';
+
         updateCvSummary({
-          summary: `Profesional dengan keahlian ${cvData.skills?.map((s) => s.name).join(', ')} yang siap berkontribusi pada posisi ${cvData.targetJob || 'target'}.`,
+          summary: `Seorang individu yang antusias, adaptif, dan berdedikasi tinggi dengan penguasaan mendalam pada keahlian utama dalam bidang ${skillsText}. Memiliki rekam jejak dalam menghadapi berbagai tantangan profesional melalui pendekatan yang solutif, analitis, teliti, serta senantiasa berorientasi pada pencapaian hasil yang optimal bagi perusahaan. Berbekal kemampuan komunikasi yang baik serta etika kerja yang kuat, saya siap untuk membawa semangat proaktif, berkolaborasi secara efektif dalam tim lintas divisi, serta memberikan kontribusi nyata dalam mendukung perkembangan serta pencapaian target strategis pada ${targetPosition}.`,
+          
           highlights: [
-            'Memiliki kompetensi teknis yang teruji.',
-            'Mampu bekerja secara mandiri maupun dalam tim.',
-            'Cepat beradaptasi dengan lingkungan kerja modern.'
+            `Memiliki kompetensi teknis dan penguasaan mendalam di bidang ${targetPosition} yang teruji melalui serangkaian evaluasi keterampilan.`,
+            `Terbiasa menerapkan standar kerja profesional, problem-solving yang tajam, serta berorientasi pada pencapaian target perusahaan.`,
+            `Memiliki kemampuan komunikasi yang baik, adaptif terhadap teknologi modern, serta mampu berkolaborasi secara efektif baik secara mandiri maupun dalam tim lintas divisi.`,
+            `Memegang teguh etika kerja profesional, berdedikasi tinggi terhadap kualitas deliverable, dan selalu proaktif dalam mempelajari hal-hal baru demi inovasi berkelanjutan.`
           ], 
-          coverLetter: "",
-          emailPitch: ""
+
+          coverLetter: {
+            opening: `Dengan hormat,\n\nSehubungan dengan lowongan pekerjaan untuk posisi ${targetPosition} di perusahaan yang Anda pimpin, melalui surat ini saya ingin menyampaikan ketertarikan serta kesiapan saya untuk bergabung dan memberikan kontribusi terbaik.`,
+            body: `Saya memiliki latar belakang keahlian yang selaras dengan kualifikasi yang dibutuhkan, khususnya dalam hal penguasaan ${skillsText}. Pengalaman dan keterampilan analitis yang saya miliki membekali saya untuk dapat langsung beradaptasi, menyelesaikan tantangan operasional, serta mendukung produktivitas tim di ${targetPosition}.`,
+            closing: `Besar harapan saya untuk diberikan kesempatan mengikuti sesi wawancara guna menjelaskan lebih lanjut mengenai potensi dan kecocokan diri saya dengan kebutuhan perusahaan. Terima kasih atas waktu dan pertimbangan Anda.`
+          },
+
+          emailPitch: {
+            subject: `Lamaran Pekerjaan - ${targetPosition} - [Nama Anda]`,
+            body: `Halo Tim Rekrutmen,\n\nBerikut saya lampirkan dokumen ringkasan profil dan portofolio terkait lamaran saya untuk posisi ${targetPosition}. Dengan keahlian utama pada ${skillsText}, saya sangat antusias untuk bisa berdiskusi lebih lanjut mengenai bagaimana saya dapat berkontribusi untuk kemajuan perusahaan.\n\nTerima kasih,\n[Nama Anda]`
+          }
         });
         
       }
@@ -176,15 +190,29 @@ export default function SkillQuiz({ onNextStep, onPrevStep, targetJob }) {
     } catch (error) {
       console.warn('Gagal membuat ringkasan CV:', error);
       if (typeof updateCvSummary === 'function') {
+        const skillsText = cvData.skills?.map((s) => s.name).join(', ') || 'kompetensi profesional';
+        const targetPosition = cvData.targetJob || 'posisi yang dilamar';
+
         updateCvSummary({
-          summary: `Profesional dengan keahlian ${cvData.skills?.map((s) => s.name).join(', ')} yang siap berkontribusi pada posisi ${cvData.targetJob || 'target'}.`,
+          summary: `Seorang individu yang antusias, adaptif, dan berdedikasi tinggi dengan penguasaan mendalam pada keahlian utama dalam bidang ${skillsText}. Memiliki rekam jejak dalam menghadapi berbagai tantangan profesional melalui pendekatan yang solutif, analitis, teliti, serta senantiasa berorientasi pada pencapaian hasil yang optimal bagi perusahaan. Berbekal kemampuan komunikasi yang baik serta etika kerja yang kuat, saya siap untuk membawa semangat proaktif, berkolaborasi secara efektif dalam tim lintas divisi, serta memberikan kontribusi nyata dalam mendukung perkembangan serta pencapaian target strategis pada ${targetPosition}.`,
+          
           highlights: [
-            'Memiliki kompetensi teknis yang teruji.',
-            'Mampu bekerja secara mandiri maupun dalam tim.',
-            'Cepat beradaptasi dengan lingkungan kerja modern.'
+            `Memiliki kompetensi teknis dan penguasaan mendalam di bidang ${targetPosition} yang teruji melalui serangkaian evaluasi keterampilan.`,
+            `Terbiasa menerapkan standar kerja profesional, problem-solving yang tajam, serta berorientasi pada pencapaian target perusahaan.`,
+            `Memiliki kemampuan komunikasi yang baik, adaptif terhadap teknologi modern, serta mampu berkolaborasi secara efektif baik secara mandiri maupun dalam tim lintas divisi.`,
+            `Memegang teguh etika kerja profesional, berdedikasi tinggi terhadap kualitas deliverable, dan selalu proaktif dalam mempelajari hal-hal baru demi inovasi berkelanjutan.`
           ], 
-          coverLetter: "",
-          emailPitch: ""
+
+          coverLetter: {
+            opening: `Dengan hormat,\n\nSehubungan dengan lowongan pekerjaan untuk posisi ${targetPosition} di perusahaan yang Anda pimpin, melalui surat ini saya ingin menyampaikan ketertarikan serta kesiapan saya untuk bergabung dan memberikan kontribusi terbaik.`,
+            body: `Saya memiliki latar belakang keahlian yang selaras dengan kualifikasi yang dibutuhkan, khususnya dalam hal penguasaan ${skillsText}. Pengalaman dan keterampilan analitis yang saya miliki membekali saya untuk dapat langsung beradaptasi, menyelesaikan tantangan operasional, serta mendukung produktivitas tim di ${targetPosition}.`,
+            closing: `Besar harapan saya untuk diberikan kesempatan mengikuti sesi wawancara guna menjelaskan lebih lanjut mengenai potensi dan kecocokan diri saya dengan kebutuhan perusahaan. Terima kasih atas waktu dan pertimbangan Anda.`
+          },
+
+          emailPitch: {
+            subject: `Lamaran Pekerjaan - ${targetPosition} - [Nama Anda]`,
+            body: `Halo Tim Rekrutmen,\n\nBerikut saya lampirkan dokumen ringkasan profil dan portofolio terkait lamaran saya untuk posisi ${targetPosition}. Dengan keahlian utama pada ${skillsText}, saya sangat antusias untuk bisa berdiskusi lebih lanjut mengenai bagaimana saya dapat berkontribusi untuk kemajuan perusahaan.\n\nTerima kasih,\n[Nama Anda]`
+          }
         });
         
       }

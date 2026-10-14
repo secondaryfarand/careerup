@@ -27,10 +27,10 @@ export default function QuizLanding({ targetJob, skills, onStart, onSkip, onPrev
           <i className="fa-solid fa-play"></i>
         </button>
       </div>
-      <AtsScoreWidget
+      {/* <AtsScoreWidget
           jobDescription={targetJob || ''}
           cvContent={skillTextContent}
-        />
+        /> */}
     </div>
   );
 }

@@ -1,11 +1,14 @@
 import { GoogleGenAI } from '@google/genai';
 
 const apiKeys = [
-  // import.meta.env.VITE_GEMINI_API_KEY_1,
-  // import.meta.env.VITE_GEMINI_API_KEY_2,
-  // import.meta.env.VITE_GEMINI_API_KEY_3,
-  // import.meta.env.VITE_GEMINI_API_KEY_4,
-  // import.meta.env.VITE_GEMINI_API_KEY_5,
+  import.meta.env.VITE_GEMINI_API_KEY_1,
+  import.meta.env.VITE_GEMINI_API_KEY_2,
+  import.meta.env.VITE_GEMINI_API_KEY_3,
+  import.meta.env.VITE_GEMINI_API_KEY_4,
+  import.meta.env.VITE_GEMINI_API_KEY_5,
+  import.meta.env.VITE_GEMINI_API_KEY_6,
+  import.meta.env.VITE_GEMINI_API_KEY_7,
+  import.meta.env.VITE_GEMINI_API_KEY_8,
   import.meta.env.VITE_GEMINI_API_KEY_NULL,
 ].filter(Boolean);
 let currentKeyIndex = 0;
